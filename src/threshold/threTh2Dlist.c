@@ -85,16 +85,20 @@ int Th2DList(Thre_S * tObj)
     int thre = tObj->thre;
     int sumWeight = Vec_IntSum(tObj->weights);
     int general = 0;
+    int upper = -1;
+    int lower = -1;
     Vec_Int_t * type2Node = Vec_IntStart(0);
     /*int debug = 0;*/
     tObj->dtypes = Vec_IntStart(0);
     tObj->thres = Vec_IntStart(0);
     Vec_IntForEachEntry(tObj->weights, w, fanin) {
-        //  direct assign type-2 fanins, can use SAT solver to further implement
+        // type-2 node, ILP
         if(general) 
         {
             Vec_IntPush(tObj->dtypes, 2);
             Vec_IntPush(tObj->thres, -1);
+
+            
             continue;
         }
         
@@ -113,14 +117,14 @@ int Th2DList(Thre_S * tObj)
         if (fanin == Vec_IntSize(tObj->weights)-1)
         {
             // dummy
-            if (w < thre) {
-                Thre_S* fi = Th_GetObjById(current_TList, Vec_IntEntry(tObj->Fanins,fanin));
-                Vec_IntPop(tObj->weights);
-                Vec_IntPop(tObj->Fanins);
-                Vec_IntPop(tObj->FaninCs);
-                Vec_IntRemove(fi->Fanouts, tObj->Id);
-                break;
-            }
+            /*if (w < thre) {                                                                 */
+            /*    Thre_S* fi = Th_GetObjById(current_TList, Vec_IntEntry(tObj->Fanins,fanin));*/
+            /*    Vec_IntPop(tObj->weights);                                                  */
+            /*    Vec_IntPop(tObj->Fanins);                                                   */
+            /*    Vec_IntPop(tObj->FaninCs);                                                  */
+            /*    Vec_IntRemove(fi->Fanouts, tObj->Id);                                       */
+            /*    break;                                                                      */
+            /*}                                                                               */
 
             // assign dtype as the previous input
             if (fanin > 0) {
@@ -149,24 +153,26 @@ int Th2DList(Thre_S * tObj)
         {
             Vec_IntPush(tObj->thres, thre);      
             Vec_IntPush(tObj->dtypes,2);
+            sumWeight -= w;
+            general = 1;
 
+            Vec_IntZero(type2Node);
+            Vec_IntPushOrder(type2Node, w);
+            Vec_IntPushOrder(type2Node, 0);
             // check if there exists a majority gate
-            if(w == Vec_IntEntry(tObj->weights,fanin+1))
-            {
-                if (2*w >= thre && sumWeight-2*w < thre) {
-                    Vec_IntPush(tObj->thres, -1);      
-                    Vec_IntPush(tObj->dtypes,2);
-                    thre -= w;
-                    sumWeight -= 2*w;
-                    fanin++;
-                    if (w == 1) general = 1; // remaining weights are all equal to 1, so they are all type-2 inputs
-                }
-                else general = 1;
-            }
-            else general = 1;
-
-            // ILP
-            
+            /*if(w == Vec_IntEntry(tObj->weights,fanin+1))                                                           */
+            /*{                                                                                                      */
+            /*    if (2*w >= thre && sumWeight-2*w < thre) {                                                         */
+            /*        Vec_IntPush(tObj->thres, -1);                                                                  */
+            /*        Vec_IntPush(tObj->dtypes,2);                                                                   */
+            /*        thre -= w;                                                                                     */
+            /*        sumWeight -= 2*w;                                                                              */
+            /*        fanin++;                                                                                       */
+            /*        if (w == 1) general = 1; // remaining weights are all equal to 1, so they are all type-2 inputs*/
+            /*    }                                                                                                  */
+            /*    else general = 1;                                                                                  */
+            /*}                                                                                                      */
+            /*else general = 1;                                                                                      */
         }
     }
     return 1;
