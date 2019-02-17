@@ -208,7 +208,7 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
          //cout<<row[j]<<" ";
          assert(ans.back()>=0);
       }
-      if(!min && !max) cout<<endl;
+      cout<<endl;
       /* we are done now */
    }
    
@@ -222,13 +222,13 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
       /* clean up such that all used memory by lpsolve is freed */
       delete_lp(lp);
    }
-   if (!min && !max) {
-     cout << "ans.size() = " << ans.size() << endl;
-     //if (ans.size() == 0)
-     //{
-       //int lu;
-       //cin >> lu;
-     //}
-   }
+   //if (!min && !max) {
+     //cout << "ans.size() = " << ans.size() << endl;
+     if (ans.size() == 0)
+     {
+       int lu;
+       cin >> lu;
+     }
+   //}
    return(ans.size());
 }

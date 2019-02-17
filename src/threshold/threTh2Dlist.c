@@ -112,13 +112,14 @@ int Th2DList(Thre_S * tObj)
             }
             else
             {
+              assert(upper > lower);
               int start, weight;
               Vec_Int_t * following = Vec_IntStart(0);
               Vec_IntForEachEntryStart(tObj->weights, weight, start, fanin+1)
               {
                 Vec_IntPush(following, weight);
               }
-              if(constructLP(following, 0, upper, lower) == 0)
+              if(constructLP(following, 0, thre-lower, thre-upper) == 0)
               {
                 general = 0;
                 upper = -1;
@@ -126,6 +127,8 @@ int Th2DList(Thre_S * tObj)
               }
               /*printf("equivalency done!\n");*/
               Vec_IntFree(following);
+              Th_PrintNode(tObj);
+              printf("fanin No. %d\n", fanin); 
             }
             continue;
         }
