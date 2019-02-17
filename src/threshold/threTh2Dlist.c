@@ -121,14 +121,15 @@ int Th2DList(Thre_S * tObj)
               }
               if(constructLP(following, 0, thre-lower, thre-upper) == 0)
               {
+                thre -= upper;
                 general = 0;
                 upper = -1;
                 lower = -1;
               }
               /*printf("equivalency done!\n");*/
               Vec_IntFree(following);
-              Th_PrintNode(tObj);
-              printf("fanin No. %d\n", fanin); 
+              /*Th_PrintNode(tObj);*/
+              /*printf("fanin No. %d\n", fanin); */
             }
             continue;
         }

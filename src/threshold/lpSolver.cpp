@@ -181,7 +181,7 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
       else set_minim(lp);
       
       /* just out of curioucity, now show the model in lp format on screen */
-      write_LP(lp, stdout);
+      //write_LP(lp, stdout);
       
       /* I only want to see important messages on screen while solving */
       set_verbose(lp,NEUTRAL);// IMPORTANT);
@@ -197,18 +197,18 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
    if (ret==0) {
    
       /* objective value */
-      printf("Objective value: %f\n", get_objective(lp));
+      //printf("Objective value: %f\n", get_objective(lp));
       
       /* variable values */
       get_variables(lp, row);
       for(j = 0; j < Ncol; j++)
       {
-         printf("%s: %f\n", get_col_name(lp, j + 1), row[j]);
+         //printf("%s: %f\n", get_col_name(lp, j + 1), row[j]);
          ans.push_back(row[j]);
          //cout<<row[j]<<" ";
          assert(ans.back()>=0);
       }
-      cout<<endl;
+      //cout<<endl;
       /* we are done now */
    }
    
@@ -224,11 +224,11 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
    }
    //if (!min && !max) {
      //cout << "ans.size() = " << ans.size() << endl;
-     if (ans.size() == 0)
-     {
-       int lu;
-       cin >> lu;
-     }
+     //if (ans.size() == 0)
+     //{
+       //int lu;
+       //cin >> lu;
+     //}
    //}
    return(ans.size());
 }
