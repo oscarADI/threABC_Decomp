@@ -13,8 +13,9 @@ SRC += src/threshold/threCmd.c \
 	 src/threshold/threKLCollapse.c \
 	 src/threshold/threTh2Blif.c \
 	 src/threshold/threTh2Mux.c \
-	 src/threshold/threDLExtract.cpp \
+	 src/threshold/threDLExtract.c \
 	 src/threshold/threCost.c \
 	 src/threshold/threTransWeight.c \
 	 src/threshold/threReWeight.c \
-   src/threshold/threTh2Dlist.c
+   src/threshold/threTh2Dlist.c \
+   src/threshold/lpSolver.cpp

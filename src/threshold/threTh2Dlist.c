@@ -40,7 +40,7 @@ void   Th_NtkTh2DList(Vec_Ptr_t * vThres);
 void   Th_DLBuildSets(Vec_Ptr_t * vThres);
 int    compare(Th_Set** i1, Th_Set** i2);
 
-/**Function*************************************************************
+/*Function*************************************************************
 
   Synopsis    [Initialize 1-DL]
 
@@ -97,8 +97,36 @@ int Th2DList(Thre_S * tObj)
         {
             Vec_IntPush(tObj->dtypes, 2);
             Vec_IntPush(tObj->thres, -1);
-
+            sumWeight -= w;
             
+            Vec_IntPush(type2Node, w);
+            upper = constructLP(type2Node, thre, -1, 0);
+            /*printf("upper = %d, done!\n\n", upper);*/
+            lower = constructLP(type2Node, thre-sumWeight, 0, -1);
+            /*printf("lower = %d, done!\n\n", lower);*/
+            if(upper == lower)
+            {
+              general = 0;
+              upper = -1;
+              lower = -1;
+            }
+            else
+            {
+              int start, weight;
+              Vec_Int_t * following = Vec_IntStart(0);
+              Vec_IntForEachEntryStart(tObj->weights, weight, start, fanin+1)
+              {
+                Vec_IntPush(following, weight);
+              }
+              if(constructLP(following, 0, upper, lower) == 0)
+              {
+                general = 0;
+                upper = -1;
+                lower = -1;
+              }
+              /*printf("equivalency done!\n");*/
+              Vec_IntFree(following);
+            }
             continue;
         }
         
@@ -157,8 +185,7 @@ int Th2DList(Thre_S * tObj)
             general = 1;
 
             Vec_IntZero(type2Node);
-            Vec_IntPushOrder(type2Node, w);
-            Vec_IntPushOrder(type2Node, 0);
+            Vec_IntPush(type2Node, w);
             // check if there exists a majority gate
             /*if(w == Vec_IntEntry(tObj->weights,fanin+1))                                                           */
             /*{                                                                                                      */

@@ -248,8 +248,8 @@ extern  void      Th_ComputeLevelWithDummy_rec( Vec_Ptr_t *  , Thre_S *  );
 extern  void      Th_RemoveDummy(); 
 extern  void      Th_IterativeUpdatePQ(Vec_Ptr_t* vThres, Vec_Ptr_t* vSet, int levelbound);
 
-
-
+//===lpSolver.cpp================================//
+extern  int       constructLP(Vec_Int_t *, int, int, int); 
 #endif
 
 ////////////////////////////////////////////////////////////////////////
