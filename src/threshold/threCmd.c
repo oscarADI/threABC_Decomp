@@ -944,7 +944,7 @@ int Abc_CommandThreExtract(Abc_Frame_t* pAbc, int argc, char** argv)
     nPo = Th_CountGate(current_TList, Th_Po);
     nThres = Th_CountGate(current_TList, Th_Node);
     Th_NtkDfs(current_TList);
-    Th_NtkTh2DList(current_TList);
+    /*Th_NtkTh2DList(current_TList);*/
     /*Th_NtkReWeight(current_TList);*/
     int i;
     Abc_Print(ABC_STANDARD, "Wire Cost: %f\n", Th_NtkCost(current_TList));
@@ -954,6 +954,7 @@ int Abc_CommandThreExtract(Abc_Frame_t* pAbc, int argc, char** argv)
     /*Abc_Print(ABC_STANDARD, "FPGA LUT Cost: %f\n", Th_NtkCost3(current_TList));*/
     Abc_Print(ABC_STANDARD, "Extracting....\n");
     abctime clk = Abc_Clock();
+    Th_NtkTh2DList(current_TList);
   //  Th_NtkTh2DList(current_TList);
   //  Th_NtkReWeight(current_TList);
     // for (i = 0; i < 2 ; ++i) {                                        

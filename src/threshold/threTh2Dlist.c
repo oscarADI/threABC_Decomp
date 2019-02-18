@@ -107,6 +107,7 @@ int Th2DList(Thre_S * tObj)
             if(upper == lower)
             {
               general = 0;
+              thre -= upper;
               upper = -1;
               lower = -1;
             }
@@ -122,6 +123,7 @@ int Th2DList(Thre_S * tObj)
               if(constructLP(following, 0, thre-lower, thre-upper) == 0)
               {
                 thre -= upper;
+                assert(thre > 0);
                 general = 0;
                 upper = -1;
                 lower = -1;
@@ -135,7 +137,7 @@ int Th2DList(Thre_S * tObj)
         }
         
         //  dummy inputs
-        if (sumWeight < thre) {                                                  
+        if (sumWeight < thre) {
          Thre_S* fi = Th_GetObjById(current_TList, Vec_IntEntry(tObj->Fanins,fanin));
          Vec_IntPop(tObj->weights);                                            
          Vec_IntPop(tObj->Fanins);                                             

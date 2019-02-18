@@ -224,11 +224,11 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
    }
    //if (!min && !max) {
      //cout << "ans.size() = " << ans.size() << endl;
-     //if (ans.size() == 0)
-     //{
-       //int lu;
-       //cin >> lu;
-     //}
+     if (ans.size() == 0)
+     {
+       int lu;
+       cin >> lu;
+     }
    //}
    return(ans.size());
 }
