@@ -954,6 +954,7 @@ int Abc_CommandThreExtract(Abc_Frame_t* pAbc, int argc, char** argv)
     /*Abc_Print(ABC_STANDARD, "FPGA LUT Cost: %f\n", Th_NtkCost3(current_TList));*/
     Abc_Print(ABC_STANDARD, "Extracting....\n");
     abctime clk = Abc_Clock();
+    Th_NtkTransWeight(current_TList);
     Th_NtkTh2DList(current_TList);
   //  Th_NtkTh2DList(current_TList);
   //  Th_NtkReWeight(current_TList);
@@ -963,13 +964,11 @@ int Abc_CommandThreExtract(Abc_Frame_t* pAbc, int argc, char** argv)
     /*int levelbound = Th_CountLevelWithDummy(current_TList) + 9;*/
     /*printf("levelbound = %d\n", levelbound-1);                 */
     while (1) {                                                   
-      /*printf("#set = %d\n", Vec_PtrSize(Golden_Vec));            */
+      /*printf("#set = %d\n", Vec_PtrSize(Golden_Vec));           */
       if (Vec_PtrSize(Golden_Vec) == 0) break;                   
       Th_IterativeUpdatePQ(current_TList, Golden_Vec, level+1);  
-      break;                                                 
     }                                                             
-    /*Th_RemoveDummy();*/
-    /*Th_NtkReWeight(current_TList);*/
+    Th_RemoveDummy();
     Abc_PrintTime(ABC_STANDARD, "Extract Time:", Abc_Clock() - clk);
     Abc_Print(ABC_STANDARD, "Wire Cost: %f\n", Th_NtkCost(current_TList));
     Abc_Print(ABC_STANDARD, "RTD Cost: %f\n", Th_NtkCost2(current_TList) + Th_NtkCostThre(current_TList));
@@ -989,6 +988,7 @@ int Abc_CommandThreCost(Abc_Frame_t* pAbc, int argc, char** argv)
     nPo = Th_CountGate(current_TList, Th_Po);
     nThres = Th_CountGate(current_TList, Th_Node);
     Th_NtkDfs(current_TList);
+    Th_NtkTransWeight(current_TList);
     /*Th_NtkTh2DList(current_TList);*/
     /*Th_NtkReWeight(current_TList);*/
     Abc_Print(ABC_STANDARD, "Wire Cost: %f\n", Th_NtkCost(current_TList));

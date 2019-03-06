@@ -222,13 +222,10 @@ int solveLp(vector< vector<int> >& A, vector<int>& B, vector<int>& ans, int max,
       /* clean up such that all used memory by lpsolve is freed */
       delete_lp(lp);
    }
+   if (ret != 0) return 0;
    //if (!min && !max) {
      //cout << "ans.size() = " << ans.size() << endl;
-     if (ans.size() == 0)
-     {
-       int lu;
-       cin >> lu;
-     }
    //}
+   //cout << "LU\n";
    return(ans.size());
 }

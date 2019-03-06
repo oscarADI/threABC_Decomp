@@ -79,7 +79,8 @@ void   Th_NtkTh2DList(Vec_Ptr_t * vThres)
 ***********************************************************************/
 int Th2DList(Thre_S * tObj)
 {
-    /*if(tObj->thre < 0) return 0;*/
+    if(tObj->thre < 0) return 0;
+        /*printf("Gate: %d, #Fanin:%d\n", tObj->Id, Vec_IntSize(tObj->Fanins));*/
     int fanin; 
     int w;
     int thre = tObj->thre;
@@ -92,6 +93,7 @@ int Th2DList(Thre_S * tObj)
     tObj->dtypes = Vec_IntStart(0);
     tObj->thres = Vec_IntStart(0);
     Vec_IntForEachEntry(tObj->weights, w, fanin) {
+        /*printf("\tFanin: %d\n", fanin);*/
         // type-2 node, ILP
         if(general) 
         {
@@ -101,9 +103,9 @@ int Th2DList(Thre_S * tObj)
             
             Vec_IntPush(type2Node, w);
             upper = constructLP(type2Node, thre, -1, 0);
-            /*printf("upper = %d, done!\n\n", upper);*/
+            /*printf("\t\tupper = %d, done!\n", upper);*/
             lower = constructLP(type2Node, thre-sumWeight, 0, -1);
-            /*printf("lower = %d, done!\n\n", lower);*/
+            /*printf("\t\tlower = %d, done!\n", lower);*/
             if(upper == lower)
             {
               general = 0;
@@ -122,13 +124,14 @@ int Th2DList(Thre_S * tObj)
               }
               if(constructLP(following, 0, thre-lower, thre-upper) == 0)
               {
+                if(Vec_IntSize(tObj->Fanins)-fanin != 2) 
                 thre -= upper;
                 assert(thre > 0);
                 general = 0;
                 upper = -1;
                 lower = -1;
               }
-              /*printf("equivalency done!\n");*/
+              /*printf("\t\tequivalency done!\n");*/
               Vec_IntFree(following);
               /*Th_PrintNode(tObj);*/
               /*printf("fanin No. %d\n", fanin); */
@@ -162,7 +165,8 @@ int Th2DList(Thre_S * tObj)
 
             // assign dtype as the previous input
             if (fanin > 0) {
-                Vec_IntPush(tObj->dtypes,Vec_IntEntryLast(tObj->dtypes));
+                if (Vec_IntEntryLast(tObj->dtypes) != 2) Vec_IntPush(tObj->dtypes,Vec_IntEntryLast(tObj->dtypes));
+                else Vec_IntPush(tObj->dtypes, 1); 
                 Vec_IntPush(tObj->thres, w);      
             }
         }
@@ -319,7 +323,7 @@ void   Th_DLBuildSets(Vec_Ptr_t * vThres)
         }
         Vec_IntFree(temp_set);
     }
-    printf("Redundant = %d\n", cnt);
+    /*printf("Redundant = %d\n", cnt);*/
     // printf("Build Done!\n");
 }
 
